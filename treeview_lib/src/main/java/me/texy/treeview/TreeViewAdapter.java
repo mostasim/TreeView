@@ -17,6 +17,7 @@ package me.texy.treeview;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,14 +29,16 @@ import java.util.List;
 import me.texy.treeview.base.BaseNodeViewBinder;
 import me.texy.treeview.base.BaseNodeViewFactory;
 import me.texy.treeview.base.CheckableNodeViewBinder;
+import me.texy.treeview.draggable.ItemTouchHelperAdapter;
 import me.texy.treeview.helper.TreeHelper;
 
 /**
  * Created by xinyuanzhong on 2017/4/21.
  */
 
-public class TreeViewAdapter extends RecyclerView.Adapter {
+public class TreeViewAdapter extends RecyclerView.Adapter implements ItemTouchHelperAdapter {
 
+    public static final String TAG = "__MB__DEBUG__";
     private Context context;
 
     private TreeNode root;
@@ -47,6 +50,10 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
     private View EMPTY_PARAMETER;
 
     private TreeView treeView;
+
+    public TreeNode getRoot() {
+        return root;
+    }
 
     TreeViewAdapter(Context context, TreeNode root,
                     @NonNull BaseNodeViewFactory baseNodeViewFactory) {
@@ -89,8 +96,10 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int level) {
-        View view = LayoutInflater.from(context).inflate(baseNodeViewFactory
-                .getNodeViewBinder(EMPTY_PARAMETER, level).getLayoutId(), parent, false);
+        View view = LayoutInflater.from(context).inflate(
+                baseNodeViewFactory.getNodeViewBinder(EMPTY_PARAMETER, level).getLayoutId(),
+                parent, false
+        );
 
         BaseNodeViewBinder nodeViewBinder = baseNodeViewFactory.getNodeViewBinder(view, level);
         nodeViewBinder.setTreeView(treeView);
@@ -130,6 +139,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
         }
 
         viewBinder.bindView(treeNode);
+        viewBinder.setTreeNode(treeNode);
     }
 
     private void setupCheckableItem(View nodeView,
@@ -273,5 +283,15 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
 
     void setTreeView(TreeView treeView) {
         this.treeView = treeView;
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        Log.e(TAG, "Move->from " + fromPosition + " to " + toPosition);
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        Log.e(TAG, "Dismiss->from " + position);
     }
 }

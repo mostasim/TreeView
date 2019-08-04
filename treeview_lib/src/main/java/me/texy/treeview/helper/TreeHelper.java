@@ -62,6 +62,31 @@ public class TreeHelper {
 
         return expandChildren;
     }
+    /*
+    * Created by Mostasim Billah using recursion call
+    * @return list of expanded child list
+    * */
+    public static List<TreeNode> expandedNode(TreeNode treeNode, boolean includeChild) {
+        List<TreeNode> expandChildren = new ArrayList<>();
+
+        if (treeNode == null) {
+            return expandChildren;
+        }
+
+        if (!(treeNode.hasChild() && treeNode.isExpanded())) {
+            return expandChildren;
+        }
+
+        for (TreeNode child : treeNode.getChildren()) {
+            expandChildren.add(child);
+
+            if (includeChild && child.isExpanded() ) {
+                expandChildren.addAll(expandedNode(child, includeChild));
+            }
+        }
+
+        return expandChildren;
+    }
 
     /**
      * Expand the same deep(level) nodes.

@@ -30,6 +30,7 @@ public abstract class BaseNodeViewBinder extends RecyclerView.ViewHolder {
      * to expand node or select node.
      */
     protected TreeView treeView;
+    protected TreeNode treeNode;
 
     public BaseNodeViewBinder(View itemView) {
         super(itemView);
@@ -69,5 +70,13 @@ public abstract class BaseNodeViewBinder extends RecyclerView.ViewHolder {
      */
     public void onNodeToggled(TreeNode treeNode, boolean expand) {
         //empty
+    }
+
+    public TreeNode getTreeNode() {
+        return treeNode;
+    }
+
+    public void setTreeNode(TreeNode treeNode) {
+        this.treeNode = treeNode;
     }
 }

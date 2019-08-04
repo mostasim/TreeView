@@ -19,6 +19,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.List;
 import me.texy.treeview.animator.TreeItemAnimator;
 import me.texy.treeview.base.BaseNodeViewFactory;
 import me.texy.treeview.base.SelectableTreeAction;
+import me.texy.treeview.draggable.DraggableItemCallBackListener;
 import me.texy.treeview.helper.TreeHelper;
 
 /**
@@ -86,6 +89,9 @@ public class TreeView implements SelectableTreeAction {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new TreeViewAdapter(context, root, baseNodeViewFactory);
         adapter.setTreeView(this);
+        ItemTouchHelper.Callback callback = new DraggableItemCallBackListener(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
         return recyclerView;
     }
