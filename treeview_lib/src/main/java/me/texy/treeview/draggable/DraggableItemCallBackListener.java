@@ -82,8 +82,7 @@ public class DraggableItemCallBackListener extends ItemTouchHelper.Callback {
             canvas.drawBitmap(mDraggableImage, x, y, mPaint);
             Log.e(TAG,"OnChildDraw Finish");
         }
-
-
+        super.onChildDrawOver(canvas,recyclerView,viewHolder,dX,dY,actionState,isCurrentlyActive);
     }
 
 
@@ -149,7 +148,12 @@ public class DraggableItemCallBackListener extends ItemTouchHelper.Callback {
 
             BaseNodeViewBinder childViewHolder = (BaseNodeViewBinder)recyclerView.findViewHolderForAdapterPosition(adapterPosition+1);
             for (int i = adapterPosition + 1; i <= lastPositionOfChildViews; i++) {
+                childViewHolder = (BaseNodeViewBinder)recyclerView.findViewHolderForAdapterPosition(i);
 
+                if (childViewHolder==null){
+                    Log.e(TAG,"Hodler NULL");
+                    return bigBitmap;
+                }
                 recyclerView.getAdapter().onBindViewHolder(childViewHolder,i);
                 childViewHolder.itemView.setDrawingCacheEnabled(true);
                 childViewHolder.itemView.buildDrawingCache();
@@ -163,7 +167,7 @@ public class DraggableItemCallBackListener extends ItemTouchHelper.Callback {
                 iHeight += childViewHolder.itemView.getMeasuredHeight() + 5;
                 childViewHolder.itemView.setDrawingCacheEnabled(false);
                 childViewHolder.itemView.destroyDrawingCache();
-
+//                childViewHolder.itemView.setVisibility(View.INVISIBLE);
             }
         }
         return bigBitmap;
