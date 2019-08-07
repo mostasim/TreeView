@@ -110,6 +110,16 @@ public class TreeNode {
         return children;
     }
 
+    public void setChildren(List<TreeNode> children) {
+        if (children == null) {
+            return;
+        }
+        this.children = new ArrayList<>();
+        for (TreeNode child : children) {
+            addChild(child);
+        }
+    }
+
     public List<TreeNode> getSelectedChildren() {
         List<TreeNode> selectedChildren = new ArrayList<>();
         for (TreeNode child : getChildren()) {
@@ -119,23 +129,13 @@ public class TreeNode {
         }
         return selectedChildren;
     }
-    
-    public void setChildren(List<TreeNode> children) {
-        if (children == null) {
-            return;
-        }        
-        this.children = new ArrayList<>();
-        for (TreeNode child : children) {
-            addChild(child);
-        }
-    }    
-
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
-    }
 
     public boolean isExpanded() {
         return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
     }
 
     public boolean hasChild() {

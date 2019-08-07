@@ -16,11 +16,15 @@ package me.texy.treeview.base;
 
 import android.view.View;
 
+import java.util.HashSet;
+
 /**
  * Created by zxy on 17/4/23.
  */
 
 public abstract class BaseNodeViewFactory {
+
+    public HashSet<Integer> levelTypes = new HashSet<>();
 
     /**
      * If you want build a tree view,you must implement this factory method

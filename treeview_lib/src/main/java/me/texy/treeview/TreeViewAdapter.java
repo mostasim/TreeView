@@ -34,6 +34,7 @@ import me.texy.treeview.helper.TreeHelper;
 
 /**
  * Created by xinyuanzhong on 2017/4/21.
+ * Modified by Mostasim Billah
  */
 
 public class TreeViewAdapter extends RecyclerView.Adapter implements ItemTouchHelperAdapter {
@@ -43,17 +44,13 @@ public class TreeViewAdapter extends RecyclerView.Adapter implements ItemTouchHe
 
     private TreeNode root;
 
-    private List<TreeNode> expandedNodeList;
+    private ArrayList<TreeNode> expandedNodeList;
 
     private BaseNodeViewFactory baseNodeViewFactory;
 
     private View EMPTY_PARAMETER;
 
     private TreeView treeView;
-
-    public TreeNode getRoot() {
-        return root;
-    }
 
     TreeViewAdapter(Context context, TreeNode root,
                     @NonNull BaseNodeViewFactory baseNodeViewFactory) {
@@ -65,6 +62,15 @@ public class TreeViewAdapter extends RecyclerView.Adapter implements ItemTouchHe
         this.expandedNodeList = new ArrayList<>();
 
         buildExpandedNodeList();
+        Log.e(TAG, "Expanded list size :" + expandedNodeList.size());
+    }
+
+    public TreeNode getRoot() {
+        return root;
+    }
+
+    public BaseNodeViewFactory getBaseNodeViewFactory() {
+        return baseNodeViewFactory;
     }
 
     private void buildExpandedNodeList() {
@@ -96,6 +102,9 @@ public class TreeViewAdapter extends RecyclerView.Adapter implements ItemTouchHe
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int level) {
+
+        if (level > 3) level = 3;
+
         View view = LayoutInflater.from(context).inflate(
                 baseNodeViewFactory.getNodeViewBinder(EMPTY_PARAMETER, level).getLayoutId(),
                 parent, false
@@ -221,6 +230,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter implements ItemTouchHe
         }
         expandedNodeList.addAll(index + 1, additionNodes);
         notifyItemRangeInserted(index + 1, additionNodes.size());
+        Log.e(TAG, "Expanded list size :" + expandedNodeList.size());
     }
 
     //Remove a node list after index.
@@ -230,6 +240,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter implements ItemTouchHe
         }
         expandedNodeList.removeAll(removedNodes);
         notifyItemRangeRemoved(index + 1, removedNodes.size());
+        Log.e(TAG, "Expanded list size :" + expandedNodeList.size());
     }
 
     /**
@@ -243,6 +254,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter implements ItemTouchHe
         int index = expandedNodeList.indexOf(treeNode);
 
         insertNodesAtIndex(index, additionNodes);
+        Log.e(TAG, "Expanded list size :" + expandedNodeList.size());
     }
 
 
@@ -257,6 +269,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter implements ItemTouchHe
         int index = expandedNodeList.indexOf(treeNode);
 
         removeNodesAtIndex(index, removedNodes);
+        Log.e(TAG, "Expanded list size :" + expandedNodeList.size());
     }
 
     /**
@@ -279,15 +292,61 @@ public class TreeViewAdapter extends RecyclerView.Adapter implements ItemTouchHe
             expandedNodeList.remove(node);
         }
         notifyItemRemoved(index);
+        Log.e(TAG, "Expanded list size :" + expandedNodeList.size());
     }
 
     void setTreeView(TreeView treeView) {
         this.treeView = treeView;
+
     }
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
+
         Log.e(TAG, "Move->from " + fromPosition + " to " + toPosition);
+
+//        changeOrderOfLevel(expandedNodeList.get(fromPosition), expandedNodeList.get(toPosition));
+//
+//        expandedNodeList.get(toPosition).addChild(expandedNodeList.get(fromPosition));
+
+//        if (fromPosition < toPosition) {
+//            for (int i = fromPosition; i < toPosition; i++) {
+//                Collections.swap(expandedNodeList, i, i + 1);
+//            }
+//        } else {
+//            for (int i = fromPosition; i > toPosition; i--) {
+//                Collections.swap(expandedNodeList, i, i - 1);
+//            }
+//        }
+
+        // notifyItemMoved(fromPosition, toPosition);
+//        notifyDataSetChanged();
+        buildRootNodeFromExpandedList();
+    }
+
+    private void changeOrderOfLevel(TreeNode fromPosition, TreeNode toPosition) {
+
+        int currentLevel = fromPosition.getLevel();
+        int modifiedLevel = toPosition.getLevel() + 1;
+        fromPosition.setLevel(modifiedLevel);
+        if (fromPosition.hasChild()) {
+            for (TreeNode treeNode : fromPosition.getChildren()) {
+                changeOrderOfLevel(treeNode, treeNode.getParent());
+            }
+        } else {
+            return;
+        }
+    }
+
+
+    private void buildRootNodeFromExpandedList() {
+        TreeNode node = TreeNode.root();
+        for (TreeNode child : expandedNodeList) {
+            if (child.getParent() == root) {
+                node.addChild(child);
+            }
+        }
+        root = node;
     }
 
     @Override

@@ -20,7 +20,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.List;
@@ -36,6 +35,7 @@ import me.texy.treeview.helper.TreeHelper;
  */
 
 public class TreeView implements SelectableTreeAction {
+    private static final String TAG = TreeView.class.getSimpleName();
     private TreeNode root;
 
     private Context context;
@@ -47,22 +47,23 @@ public class TreeView implements SelectableTreeAction {
     private TreeViewAdapter adapter;
 
     private boolean itemSelectable = true;
-
-    public void setItemAnimator(RecyclerView.ItemAnimator itemAnimator) {
-        this.itemAnimator = itemAnimator;
-        if (rootView != null && itemAnimator != null) {
-            rootView.setItemAnimator(itemAnimator);
-        }
-    }
-
     private RecyclerView.ItemAnimator itemAnimator;
 
-    public TreeView(@NonNull TreeNode root, @NonNull Context context, @NonNull BaseNodeViewFactory baseNodeViewFactory) {
+    public TreeView(@NonNull TreeNode root, @NonNull Context context, @NonNull final BaseNodeViewFactory baseNodeViewFactory) {
         this.root = root;
         this.context = context;
         this.baseNodeViewFactory = baseNodeViewFactory;
         if (baseNodeViewFactory == null) {
             throw new IllegalArgumentException("You must assign a BaseNodeViewFactory!");
+        }
+
+
+    }
+
+    public void setItemAnimator(RecyclerView.ItemAnimator itemAnimator) {
+        this.itemAnimator = itemAnimator;
+        if (rootView != null && itemAnimator != null) {
+            rootView.setItemAnimator(itemAnimator);
         }
     }
 
@@ -76,7 +77,7 @@ public class TreeView implements SelectableTreeAction {
 
     @NonNull
     private RecyclerView buildRootView() {
-        RecyclerView recyclerView = new RecyclerView(context);
+        final RecyclerView recyclerView = new RecyclerView(context);
         /**
          * disable multi touch event to prevent terrible data set error when calculate list.
          */

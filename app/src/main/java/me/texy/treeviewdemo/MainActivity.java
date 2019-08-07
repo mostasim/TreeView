@@ -98,6 +98,13 @@ public class MainActivity extends AppCompatActivity {
                 for (int k = 0; k < 5; k++) {
                     TreeNode treeNode2 = new TreeNode(new String("Grand Child " + "No." + k));
                     treeNode2.setLevel(2);
+                    for (int l = 0; l <= 6; l++) {
+                        if (l % 2 == 0) {
+                            TreeNode treeNode3 = new TreeNode(new String("Grand grand Child " + "No." + l));
+                            treeNode3.setLevel(3);
+                            treeNode2.addChild(treeNode3);
+                        }
+                    }
                     treeNode1.addChild(treeNode2);
                 }
                 treeNode.addChild(treeNode1);

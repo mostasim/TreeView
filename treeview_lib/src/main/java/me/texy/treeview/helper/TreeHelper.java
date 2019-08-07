@@ -62,10 +62,12 @@ public class TreeHelper {
 
         return expandChildren;
     }
-    /*
-    * Created by Mostasim Billah using recursion call
-    * @return list of expanded child list
-    * */
+
+    /**
+     * Created by Mostasim Billah using recursion call
+     *
+     * @return list of expanded child list
+     */
     public static List<TreeNode> expandedNode(TreeNode treeNode, boolean includeChild) {
         List<TreeNode> expandChildren = new ArrayList<>();
 
@@ -80,7 +82,7 @@ public class TreeHelper {
         for (TreeNode child : treeNode.getChildren()) {
             expandChildren.add(child);
 
-            if (includeChild && child.isExpanded() ) {
+            if (includeChild && child.isExpanded()) {
                 expandChildren.addAll(expandedNode(child, includeChild));
             }
         }

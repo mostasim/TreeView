@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import me.texy.treeviewdemo.R;
 import me.texy.treeview.TreeNode;
 import me.texy.treeview.base.CheckableNodeViewBinder;
 
@@ -16,6 +15,7 @@ public class SecondLevelNodeViewBinder extends CheckableNodeViewBinder {
 
     TextView textView;
     ImageView imageView;
+
     public SecondLevelNodeViewBinder(View itemView) {
         super(itemView);
         textView = (TextView) itemView.findViewById(R.id.node_name_view);

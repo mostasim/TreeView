@@ -11,11 +11,12 @@ import me.texy.treeview.base.CheckableNodeViewBinder;
  * Created by zxy on 17/4/23.
  */
 
-public class FirstLevelNodeViewBinder extends CheckableNodeViewBinder {
+public class SecondLevel2NodeViewBinder extends CheckableNodeViewBinder {
+
     TextView textView;
     ImageView imageView;
 
-    public FirstLevelNodeViewBinder(View itemView) {
+    public SecondLevel2NodeViewBinder(View itemView) {
         super(itemView);
         textView = (TextView) itemView.findViewById(R.id.node_name_view);
         imageView = (ImageView) itemView.findViewById(R.id.arrow_img);
@@ -28,7 +29,7 @@ public class FirstLevelNodeViewBinder extends CheckableNodeViewBinder {
 
     @Override
     public int getLayoutId() {
-        return R.layout.item_first_level;
+        return R.layout.item_second_level2;
     }
 
     @Override

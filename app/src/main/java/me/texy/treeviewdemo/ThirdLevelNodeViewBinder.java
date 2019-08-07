@@ -3,7 +3,6 @@ package me.texy.treeviewdemo;
 import android.view.View;
 import android.widget.TextView;
 
-import me.texy.treeviewdemo.R;
 import me.texy.treeview.TreeNode;
 import me.texy.treeview.base.CheckableNodeViewBinder;
 
@@ -13,6 +12,7 @@ import me.texy.treeview.base.CheckableNodeViewBinder;
 
 public class ThirdLevelNodeViewBinder extends CheckableNodeViewBinder {
     TextView textView;
+
     public ThirdLevelNodeViewBinder(View itemView) {
         super(itemView);
         textView = (TextView) itemView.findViewById(R.id.node_name_view);
